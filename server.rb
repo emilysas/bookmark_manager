@@ -8,6 +8,7 @@ DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
 
 require './lib/link' # this needs to be done after datamapper is initialised
 require './lib/tag'
+require './lib/user'
 
 # After declaring your modesl, you should finalise them
 DataMapper.finalize
@@ -34,6 +35,16 @@ class BookmarkManager < Sinatra::Base
     tag = Tag.first(:text => params[:text])
     @links = tag ? tag.links : []
     erb :index
+  end
+
+  get '/users/new' do
+    erb :"users/new"
+  end
+
+  post '/users' do
+    User.create(:email => params[:email],
+                :password => params[:password])
+    redirect to('/')
   end
 
 end
