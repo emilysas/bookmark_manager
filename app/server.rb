@@ -10,7 +10,6 @@ require './lib/link' # this needs to be done after datamapper is initialised
 require './lib/tag'
 require './lib/user'
 require_relative 'helpers/application'
-require_relative 'data_mapper_setup'
 
 # After declaring your modesl, you should finalise them
 DataMapper.finalize
