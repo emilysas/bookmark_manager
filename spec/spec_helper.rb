@@ -1,6 +1,6 @@
 ENV['RACK_ENV'] = 'test' # tells us which database to work with
 
-require './server.rb' #needs to be after the env so that the server knows 
+require './app/server.rb' #needs to be after the env so that the server knows 
 # which environment it's running in
 require 'database_cleaner'
 require 'capybara/rspec'
