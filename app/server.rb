@@ -73,6 +73,13 @@ class BookmarkManager < Sinatra::Base
     end
   end
 
+  delete '/sessions' do
+    session.clear
+    flash[:notice]="Good bye!"
+    redirect '/'
+  end
+
+
   
 
 end
