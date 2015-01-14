@@ -13,10 +13,6 @@ feature "User signs up" do
     expect(User.first.email).to eq("alice@example.com")
   end
 
-  scenario "with a password that doens't match" do
-    expect{ sign_up('a@a.com', 'pass', 'wrong')}.to change(User, :count).by(0)
-  end
-
   scenario "with a password that doesn't match" do
     expect { sign_up('a@a.com', 'pass', 'wrong') }.to change(User, :count).by(0)
     expect(current_path).to eq('/users')

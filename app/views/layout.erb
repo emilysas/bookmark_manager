@@ -4,6 +4,9 @@
 		<% if current_user %>
 		Welcome, <%= current_user.email %>
 		<% end %>
+		<% if flash[:notice] %>
+			<section id="notice"><%= flash[:notice] %></section>
+		<% end %>
 		<%= yield %>
 	</body>
 </html>

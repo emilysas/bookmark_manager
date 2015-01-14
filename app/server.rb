@@ -1,5 +1,6 @@
 require 'data_mapper'
 require 'sinatra'
+require 'rack-flash'
 require './lib/link' # this needs to be done after datamapper is initialised
 require './lib/tag'
 require './lib/user'
@@ -10,6 +11,8 @@ class BookmarkManager < Sinatra::Base
 
   enable :sessions
   set :session_secret, 'super secret'
+  use Rack::Flash
+
   helpers CurrentUser
 
   get '/' do
@@ -32,21 +35,23 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/users/new' do
+    @user = User.new
     erb :"users/new"
   end
 
   post '/users' do
     # we initialize the object without saving it - can be invalid
-    user = User.create(:email => params[:email],
+    @user = User.new(:email => params[:email],
                 :password => params[:password],
                 :password_confirmation => params[:password_confirmation])
     # we try saving it
     # if valid, it will be saved
-    if user.save
-      session[:user_id] = user.id
+    if @user.save
+      session[:user_id] = @user.id
       redirect to('/')
     # if it's not valid, we'll show the same form again
     else
+      flash[:notice] = "Sorry, your passwords don't match"
       erb :"users/new"
     end
   end
