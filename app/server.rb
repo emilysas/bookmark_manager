@@ -10,6 +10,7 @@ class BookmarkManager < Sinatra::Base
 
   enable :sessions
   set :session_secret, 'super secret'
+  helpers CurrentUser
 
   get '/' do
     @links = Link.all
