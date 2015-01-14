@@ -68,3 +68,24 @@ feature "User signs out" do
   end
 
 end
+
+feature "User forgets password" do
+
+  before(:each) do
+  User.create(:email => "test@test.com",
+              :password => 'test',
+              :password_confirmation => 'test')
+  end
+
+  scenario 'User requests password reset' do
+    visit '/'
+    request_token('test@test.com')
+    click_button "Send"
+    #expect database to have a password token in user item
+  end
+
+end
+
+
+
+

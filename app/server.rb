@@ -1,9 +1,7 @@
 require 'data_mapper'
 require 'sinatra'
 require 'rack-flash'
-require './lib/link' # this needs to be done after datamapper is initialised
-require './lib/tag'
-require './lib/user'
+
 require_relative 'helpers/application'
 require_relative 'data_mapper_setup'
 
@@ -73,13 +71,32 @@ class BookmarkManager < Sinatra::Base
     end
   end
 
+  get '/sessions/reminder' do
+    user = User.first(:email => email)
+    # avoid having to memorise ascii codes
+    user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
+    user.password_token_timestamp = Time.now
+    user.save
+    # send an email with '/users/reset_password/user.password_token'
+  end
+
+  get '/sessions/request_token' do
+    erb :request_token
+  end
+
+  get '/users/reset_password/:token' do
+    # 1. find the user with a specific token
+    user = User.first(:password_token => token)
+    # Check that the token was issued recently
+    # we have to check if (Time.now - the time when the token was created) is greater than 5 min
+    # 2. give a form to the user (new pass + conf)
+    erb :"sessions/change_password"
+  end
+
   delete '/sessions' do
     session.clear
     flash[:notice]="Good bye!"
     redirect '/'
   end
-
-
-  
 
 end
