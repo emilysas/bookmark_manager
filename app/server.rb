@@ -36,11 +36,19 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/users' do
+    # we initialize the object without saving it - can be invalid
     user = User.create(:email => params[:email],
                 :password => params[:password],
                 :password_confirmation => params[:password_confirmation])
-    session[:user_id] = user.id
-    redirect to('/')
+    # we try saving it
+    # if valid, it will be saved
+    if user.save
+      session[:user_id] = user.id
+      redirect to('/')
+    # if it's not valid, we'll show the same form again
+    else
+      erb :"users/new"
+    end
   end
 
   
