@@ -1,11 +1,9 @@
 require 'spec_helper'
+require './app/helpers/session.rb'
+
+include SessionHelpers
 
 feature "User signs up" do 
-
-  # Normally, tests that check the UI should be seperate from the tests 
-  # that check what we have in the DB
-  # If you mix them then you're testing both the 
-  # business logic and the views
 
   scenario "when being a new user visiting the site" do
     expect{ sign_up }.to change(User, :count).by(1)
@@ -23,17 +21,6 @@ feature "User signs up" do
     expect{ sign_up }.to change(User, :count).by(1)
     expect{ sign_up }.to change(User, :count).by(0)
     expect(page).to have_content("This email is already taken")
-  end
-
-  def sign_up(email = "alice@example.com",
-              password = "oranges!",
-              password_confirmation = "oranges!")
-    visit '/users/new'
-    expect(page.status_code).to eq(200)
-    fill_in :email, :with => email
-    fill_in :password, :with => password
-    fill_in :password_confirmation, :with => password_confirmation
-    click_button "Sign up"
   end
 
 end
@@ -59,13 +46,6 @@ feature "User signs in" do
     expect(page).not_to have_content("Welcome, test@test.com")
     sign_in('test@test.com', 'wrong')
     expect(page).not_to have_content("Welcome, test@test.com")
-  end
-
-  def sign_in(email, password)
-    visit '/sessions/new'
-    fill_in 'email', :with => email
-    fill_in 'password', :with => password
-    click_button 'Sign in'
   end
 
 end
