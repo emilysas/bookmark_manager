@@ -5,6 +5,8 @@ gem 'sinatra'
 gem 'dm-postgres-adapter'
 gem 'bcrypt-ruby'
 gem 'rack-flash3'
+gem 'mailgun-ruby'
+gem 'rest_client'
 
 #Testing
 gem 'rspec'

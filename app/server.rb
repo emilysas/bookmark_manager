@@ -72,6 +72,7 @@ class BookmarkManager < Sinatra::Base
     user.password_token = user.create_token
     user.password_token_timestamp = Time.now
     user.save
+    user.send_email(user.password_token)
     redirect '/sessions/new'
   end
 
