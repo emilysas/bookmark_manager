@@ -79,9 +79,7 @@ feature "User forgets password" do
 
   scenario 'User requests password reset' do
     visit '/'
-    request_token('test@test.com')
-    click_button "Send"
-    #expect database to have a password token in user item
+    expect{request_token("test@test.com")}.to change{User.first(:email => "test@test.com").password_token}
   end
 
 end

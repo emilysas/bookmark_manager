@@ -71,17 +71,18 @@ class BookmarkManager < Sinatra::Base
     end
   end
 
-  get '/sessions/reminder' do
-    user = User.first(:email => email)
+  post '/sessions/reminder' do
+    user = User.first(:email => params[:email])
     # avoid having to memorise ascii codes
     user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.password_token_timestamp = Time.now
     user.save
     # send an email with '/users/reset_password/user.password_token'
+    redirect '/'
   end
 
   get '/sessions/request_token' do
-    erb :request_token
+    erb :"sessions/request_token"
   end
 
   get '/users/reset_password/:token' do

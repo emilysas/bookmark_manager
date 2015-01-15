@@ -11,17 +11,15 @@ module SessionHelpers
               password = "oranges!",
               password_confirmation = "oranges!")
     visit '/users/new'
-    expect(page.status_code).to eq(200)
-    fill_in :email, :with => email
-    fill_in :password, :with => password
-    fill_in :password_confirmation, :with => password_confirmation
+    fill_in 'email', :with => email
+    fill_in 'password', :with => password
+    fill_in 'password_confirmation', :with => password_confirmation
     click_button "Sign up"
   end
 
   def request_token(email = "alice@example.com")
     visit '/sessions/request_token'
-    expect(page.status_code).to eq(200)
-    fill_in :email, :with => email
+    fill_in 'email', :with => email
     click_button 'Send'
   end
 end
