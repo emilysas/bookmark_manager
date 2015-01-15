@@ -1,5 +1,5 @@
-require 'data_mapper'
 require 'sinatra'
+require 'data_mapper'
 require 'rack-flash'
 
 require_relative 'helpers/application'
@@ -87,7 +87,8 @@ class BookmarkManager < Sinatra::Base
 
   get '/users/reset_password/:token' do
     # 1. find the user with a specific token
-    user = User.first(:password_token => token)
+    user = User.first(:password_token => params[:token])
+    @password_token = user.password_token
     # Check that the token was issued recently
     # we have to check if (Time.now - the time when the token was created) is greater than 5 min
     # 2. give a form to the user (new pass + conf)

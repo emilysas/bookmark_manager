@@ -22,4 +22,10 @@ module SessionHelpers
     fill_in 'email', :with => email
     click_button 'Send'
   end
+
+  def change_password(new_password)
+    fill_in 'password', :with => new_password
+    fill_in 'password_confirmation', :with => new_password
+    click_button 'Submit'
+  end
 end
