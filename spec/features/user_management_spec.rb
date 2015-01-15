@@ -83,12 +83,21 @@ feature "User forgets password" do
   end
 
   scenario 'User can change password' do
+ 
     visit '/'
     request_token("test@test.com")
-    visit "/users/reset_password/#{User.first(:email => "test@test.com").password_token}"
-    expect{change_password("new_password") }.to change{User.first(:email => "test@test.com").password_digest}
-
+    visit "/sessions/change_password/#{User.first(:email => "test@test.com").password_token}"
+    puts User.first(:email => "test@test.com").password_digest
+    fill_in :new_password, :with => "1234"
+    fill_in :password_confirmation, :with => "1234"
+    click_button "Submit"
+    puts User.first(:email => "test@test.com").password_digest
+    expect{User.first(:email => "test@test.com").password_digest}.to change
   end
+
+  # scenario 'Password token expires' do
+
+  #   end
 
 end
 

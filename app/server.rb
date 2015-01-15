@@ -69,25 +69,24 @@ class BookmarkManager < Sinatra::Base
 
   post '/sessions/reminder' do
     user = User.first(:email => params[:email])
-    user.password_token = user.create_token
-    user.password_token_timestamp = Time.now
+    user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.save
-    redirect '/sessions/new'
+    'check your email'
   end
 
   get '/sessions/request_token' do
     erb :"sessions/request_token"
   end
 
-  get '/users/reset_password/:token' do
-    user = User.first(:password_token => params[:token])
-    @password_token = user.password_token
-    erb :"sessions/change_password"
+  get '/sessions/change_password/:token' do
+    @password_token = params[:token]
+    erb :'sessions/change_password'
   end
 
   post '/sessions/password_reset' do
     user = User.first(:password_token => params[:password_token])
-    user.update(:password => params[:password], :password_confirmation => params[:password_confirmation])
+    user.update(:password => params[:new_password], :password_confirmation => params[:password_confirmation])
+    user.save
   end
 
   delete '/sessions' do
