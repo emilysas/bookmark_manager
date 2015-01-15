@@ -39,16 +39,12 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/users' do
-    # we initialize the object without saving it - can be invalid
     @user = User.new(:email => params[:email],
                 :password => params[:password],
                 :password_confirmation => params[:password_confirmation])
-    # we try saving it
-    # if valid, it will be saved
     if @user.save
       session[:user_id] = @user.id
       redirect to('/')
-    # if it's not valid, we'll show the same form again
     else
       flash.now[:errors] = @user.errors.full_messages
       erb :"users/new"
@@ -73,12 +69,10 @@ class BookmarkManager < Sinatra::Base
 
   post '/sessions/reminder' do
     user = User.first(:email => params[:email])
-    # avoid having to memorise ascii codes
-    user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
+    user.password_token = user.create_token
     user.password_token_timestamp = Time.now
     user.save
-    # send an email with '/users/reset_password/user.password_token'
-    redirect '/'
+    redirect '/sessions/new'
   end
 
   get '/sessions/request_token' do
@@ -86,12 +80,8 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/users/reset_password/:token' do
-    # 1. find the user with a specific token
     user = User.first(:password_token => params[:token])
     @password_token = user.password_token
-    # Check that the token was issued recently
-    # we have to check if (Time.now - the time when the token was created) is greater than 5 min
-    # 2. give a form to the user (new pass + conf)
     erb :"sessions/change_password"
   end
 

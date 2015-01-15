@@ -29,4 +29,8 @@ class User
       nil
     end
   end
+
+  def create_token
+    (1..64).map{('A'..'Z').to_a.sample}.join
+  end
 end
