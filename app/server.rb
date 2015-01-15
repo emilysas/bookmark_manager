@@ -95,6 +95,11 @@ class BookmarkManager < Sinatra::Base
     erb :"sessions/change_password"
   end
 
+  post '/sessions/password_reset' do
+    user = User.first(:password_token => params[:password_token])
+    user.update(:password => params[:password], :password_confirmation => params[:password_confirmation])
+  end
+
   delete '/sessions' do
     session.clear
     flash[:notice]="Good bye!"
