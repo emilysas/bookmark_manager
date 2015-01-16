@@ -41,7 +41,7 @@ class User
     "@api.mailgun.net/v2/sandbox08bbde70289b495194ccf3c072fa8621.mailgun.org/messages",
     :from => "Mailgun Sandbox <postmaster@sandbox08bbde70289b495194ccf3c072fa8621.mailgun.org>",
     :to => "emily.bronwen.sas@gmail.com",
-    :subject => "Forgotten Password",
+    :subject => "Reset Password token",
     :text => "Please follow the link: \"/users/reset_password/#{@password_token}\" to change your password. This link will expire at #{Time.now+(60*60)}"
   end
 end

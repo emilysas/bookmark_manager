@@ -72,9 +72,10 @@ end
 feature "User forgets password" do
 
   before(:each) do
-  User.create(:email => "test@test.com",
+  user = User.create(:email => "test@test.com",
               :password => 'test',
               :password_confirmation => 'test')
+   allow_any_instance_of(User).to receive(:send_email)
   end
 
   scenario 'User requests password reset' do
@@ -88,7 +89,6 @@ feature "User forgets password" do
     visit "/users/reset_password/#{User.first(:email => "test@test.com").password_token}"
     expect{change_password("new_password") }.to change{User.first(:email => "test@test.com").password_digest}
   end
-
 
 end
 
