@@ -1,6 +1,6 @@
-require './lib/link' # this needs to be done after datamapper is initialised
-require './lib/tag'
-require './lib/user'
+require './models/link' # this needs to be done after datamapper is initialised
+require './models/tag'
+require './models/user'
 
 env = ENV['RACK_ENV'] || 'development'
 
